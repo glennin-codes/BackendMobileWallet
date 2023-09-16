@@ -21,12 +21,16 @@ ngrokStart();
 
 let paymentData = {};
 const stkPush = async (req, res) => {
+ 
   // const ngrokUrl = await startNgrok();
   paymentData = {
     ...paymentData,
-    email: req.body.email,
     phone: req.body.phone,
     amount: req.body.amount,
+    user: {
+      userId: req.body.userId,
+      userName:req.body.userName,
+    },
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
   const amount = req.body.amount;
@@ -61,7 +65,7 @@ const stkPush = async (req, res) => {
     PartyA: `254${phone}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
     PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: `${ngrokUrl}/pay/callback`,
+    CallBackURL: `${ngrokUrl}/api/deposit/callback`,
     AccountReference: `SparkElectrons`,
     TransactionDesc: "SparkElectrons",
   };
