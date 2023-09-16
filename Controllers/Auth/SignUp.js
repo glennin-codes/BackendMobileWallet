@@ -1,6 +1,7 @@
 
 const User = require("../../Models/user");
 const jwt=require ('jsonwebtoken');
+const bcrypt= require('bcrypt');
 
 const generateAuthToken = (userId, email,name) => {
   return jwt.sign({ userId: userId, email: email,UserName:name }, process.env.JWT_SECRET, {
@@ -8,7 +9,7 @@ const generateAuthToken = (userId, email,name) => {
   });
 };
 
-const createUSer = async (req, res) => {
+const CreateUSer = async (req, res) => {
   try {
  
       const { name, email, password,  } =
@@ -50,4 +51,4 @@ const createUSer = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
-module.exports=createUSer;
+module.exports=CreateUSer;
