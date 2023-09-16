@@ -1,12 +1,9 @@
-const { Router } = require('express');
+const express = require("express");
+const { CreateToken, callBack } = require("../Controllers/StkPush");
+const router=express.Router();
 
-const router = Router();
+router.post("/",CreateToken,stkPush)
 
-/* GET index page. */
-router.get('/', (req, res) => {
-  res.json({
-    title: 'Express'
-  });
-});
+router.post('/callback',callBack);
 
-module.exports = router;
+module.exports=router
