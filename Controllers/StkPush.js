@@ -1,7 +1,8 @@
-const axios = require("axios");
+
 const { startNgrok } = require("../ngrok.js");
 
 const { Transactions } = require("../Models/transactions.js");
+const { default: axios } = require("axios");
 
 require("dotenv").config();
 
