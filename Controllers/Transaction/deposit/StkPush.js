@@ -1,7 +1,7 @@
 
-const { startNgrok } = require("../ngrok.js");
+const { startNgrok } = require("../../../ngrok.js");
 
-const { Transactions } = require("../Models/transactions.js");
+const { Transactions } = require("../../../Models/transactions.js");
 const { default: axios } = require("axios");
 
 require("dotenv").config();
@@ -18,32 +18,7 @@ const ngrokStart = async () => {
 };
 ngrokStart();
 
-const CreateToken = async (req, res, next) => {
-  //getting the  auth ..by encoding both consumer key and consumerSecret
 
-  const secret = process.env.MPESA_CONSUMER_SECRET;
-  const consumerKey = process.env.MPESA_CONSUMER_KEY;
-  //AUTH
-  const auth = new Buffer.from(`${consumerKey}:${secret}`).toString("base64"); // this encodes the consume secret and consumer key using base64. the encoded string will be used to send a request to the safaricom api to give us an access token
-
-  await axios
-    .get(
-      "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials",
-      {
-        headers: {
-          authorization: `Basic ${auth}`,
-        },
-      }
-    )
-    .then((data) => {
-      console.log(data.data.access_token);
-      token = data.data.access_token;
-      next(); //passing the token to the next middleware
-    })
-    .catch((err) => {
-      console.log(err.response);
-    });
-};
 let paymentData = {};
 const stkPush = async (req, res) => {
   // const ngrokUrl = await startNgrok();
@@ -51,12 +26,10 @@ const stkPush = async (req, res) => {
     ...paymentData,
     email: req.body.email,
     phone: req.body.phone,
-    productName: req.body.productName,
     amount: req.body.amount,
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
   const amount = req.body.amount;
-  productId = req.body.productId;
   // res.json({ phone, amount });
   console.log(req.qbody);
   //timestamp
@@ -138,4 +111,4 @@ const callBack = async (req, res) => {
   }
 };
 
-module.exports = { CreateToken, stkPush, callBack };
+module.exports = {  stkPush, callBack };

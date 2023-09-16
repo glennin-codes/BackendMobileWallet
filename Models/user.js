@@ -11,6 +11,9 @@ const userSchema = new Schema({
   password: {
     type:String
   },
+  amount:{
+    type:Number
+  }
 
 });
 const User = model("User", userSchema);

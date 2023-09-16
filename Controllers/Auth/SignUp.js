@@ -27,6 +27,7 @@ const createUSer = async (req, res) => {
         name: name,
         email: email,
         password: hashedPassword,
+        amount:0
      
         // verificationCode: verificationCode,
       });
