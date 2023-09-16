@@ -6,9 +6,8 @@
   "main": "app.js",
   "scripts": {
     "eslint": "./node_modules/eslint/bin/eslint.js --max-warnings 0 --ext .js .",
-    "start": "node ./bin/start.js",
-    "dev": "nodemon ./bin/start.js",
-    "test": "./node_modules/mocha/bin/mocha --recursive"
+    "start": "node ./bin/start",
+    "dev": "nodemon ./bin/start"
   },
   "dependencies": {
     "@ngrok/ngrok": "^0.6.0",
