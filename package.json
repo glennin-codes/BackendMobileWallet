@@ -11,6 +11,7 @@
     "test": "./node_modules/mocha/bin/mocha --recursive"
   },
   "dependencies": {
+    "@ngrok/ngrok": "^0.6.0",
     "axios": "^1.5.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.6",
@@ -22,7 +23,6 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.2",
     "morgan": "^1.10.0",
-    "ngrok": "^5.0.0-beta.2",
     "nodemon": "^3.0.1"
   },
   "devDependencies": {

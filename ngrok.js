@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
-const ngrok = require('ngrok');
-
+const ngrok = require("@ngrok/ngrok");
 dotenv.config();
 
 async function startNgrok() {
@@ -14,7 +13,7 @@ async function startNgrok() {
     console.log(`Ngrok URL: ${url}`);
     return url;
   } catch (e) {
-    console.error(e.message);
+    console.error(e);
   }
 }
 

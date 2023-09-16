@@ -1,4 +1,3 @@
-
 const { startNgrok } = require("../../../ngrok.js");
 
 const { Transactions } = require("../../../Models/transactions.js");
@@ -12,16 +11,15 @@ let merchantRequestId;
 const ngrokStart = async () => {
   try {
     ngrokUrl = await startNgrok();
+    console.log(ngrokUrl);
   } catch (e) {
     console.log(e.message);
   }
 };
 ngrokStart();
 
-
 let paymentData = {};
 const stkPush = async (req, res) => {
- 
   // const ngrokUrl = await startNgrok();
   paymentData = {
     ...paymentData,
@@ -29,13 +27,13 @@ const stkPush = async (req, res) => {
     amount: req.body.amount,
     user: {
       userId: req.body.userId,
-      userName:req.body.userName,
+      userName: req.body.userName,
     },
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
   const amount = req.body.amount;
   // res.json({ phone, amount });
-  console.log(req.qbody);
+  console.log(req.body);
   //timestamp
   const date = new Date();
   const timeStamp =
@@ -65,9 +63,9 @@ const stkPush = async (req, res) => {
     PartyA: `254${phone}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
     PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: `${ngrokUrl}/api/deposit/callback`,
-    AccountReference: `SparkElectrons`,
-    TransactionDesc: "SparkElectrons",
+    CallBackURL: `${ngrokUrl}/api/callback`,
+    AccountReference: `MobileWallet`,
+    TransactionDesc: "MobileWallet",
   };
   await axios
     .post(Url, Data, {
@@ -83,7 +81,7 @@ const stkPush = async (req, res) => {
       res.status(200).json(response.data);
     })
     .catch((err) => {
-      console.log(err + "hhhh");
+      console.error(err + "hhhh");
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
 };
@@ -115,4 +113,4 @@ const callBack = async (req, res) => {
   }
 };
 
-module.exports = {  stkPush, callBack };
+module.exports = { stkPush, callBack };

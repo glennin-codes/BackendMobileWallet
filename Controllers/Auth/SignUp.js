@@ -45,7 +45,8 @@ const CreateUSer = async (req, res) => {
 
     //   VerifyEmail(verify);
 
-   return res.status(201).json(token);
+   return res.status(201).json({token:token,user:user});
+   
      } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
