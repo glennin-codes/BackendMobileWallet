@@ -3,19 +3,18 @@ const { Schema } = require("mongoose");
 
 const userSchema = new Schema({
   name: {
-    type:String
+    type: String,
   },
 
   email: {
-    type:String
+    type: String,
   },
   password: {
-    type:String
+    type: String,
   },
-  amount:{
-    type:Number
-  }
-
+  amount: {
+    type: Number,
+  },
 });
 const User = mongoose.model("User", userSchema);
-module.exports=User;
+module.exports = User;
