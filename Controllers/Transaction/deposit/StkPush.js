@@ -25,10 +25,7 @@ const stkPush = async (req, res) => {
     ...paymentData,
     phone: req.body.phone,
     amount: req.body.amount,
-    user: {
-      userId: req.body.userId,
-      userName: req.body.userName,
-    },
+   email:req.body.email
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
   const amount = req.body.amount;

@@ -1,15 +1,9 @@
 const { Schema, default: mongoose } = require("mongoose");
 
 const transactionSchema = new Schema({
-  user: {
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: "User", // Reference to the User model
-    },
-    userName: {
-      type: String,
-    },
-  },
+ email:{
+type:String
+ },
 
   datePayed: {
     type: Date,
