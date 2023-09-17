@@ -8,6 +8,8 @@ const loginUser = require("../Controllers/Auth/Login");
 const CreateUSer = require("../Controllers/Auth/SignUp");
 const Populate = require("../populate");
 const getAllTransactions = require("../Controllers/Transaction/GetTransaction");
+const { quee, widthrawPayment, result } = require("../Controllers/Transaction/Widthraw/widthraw");
+
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -15,8 +17,12 @@ router.get("/", (req, res) => {
 });
 
 router.post("/deposit", CreateToken, stkPush);
+router.post("/deposit/call_back", callBack);
+router.post("/widthraw", CreateToken, widthrawPayment);
+router.post("/widthraw/quee",quee);
+router.post("/widthraw/result",result);
 
-router.post("/callback", callBack);
+
 router.route("/auth/login").post(loginUser);
 router.route("/auth/signup").post(CreateUSer);
 router.delete("/api/all", Populate);

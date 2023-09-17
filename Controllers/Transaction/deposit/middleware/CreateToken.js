@@ -19,7 +19,8 @@ const CreateToken = async (req, res, next) => {
     )
     .then((data) => {
       console.log(data.data.access_token);
-      token = data.data.access_token;
+      req.token = data.data.access_token;
+      
       next(); //passing the token to the next middleware
     })
     .catch((err) => {

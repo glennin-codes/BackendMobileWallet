@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
 
     const token = generateAuthToken(user._id, user.email, user.name);
 
-    res.status(200).json(token);
+    res.status(200).json({ token: token, user: user });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

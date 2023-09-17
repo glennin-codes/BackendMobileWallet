@@ -2,25 +2,30 @@ const { startNgrok } = require("../../../ngrok.js");
 
 const { Transactions } = require("../../../Models/transactions.js");
 const { default: axios } = require("axios");
+const depositFunds = require("./depositFunds.js");
+
 
 require("dotenv").config();
 
 let ngrokUrl;
 let merchantRequestId;
+let email
 
-const ngrokStart = async () => {
-  try {
-    ngrokUrl = await startNgrok();
-    console.log(ngrokUrl);
-  } catch (e) {
-    console.log(e.message);
-  }
-};
-ngrokStart();
+// const ngrokStart = async () => {
+//   try {
+//     ngrokUrl = await startNgrok();
+//     console.log(ngrokUrl);
+//   } catch (e) {
+//     console.log(e.message);
+//   }
+// };
+// ngrokStart();
 
 let paymentData = {};
+let amount;
 const stkPush = async (req, res) => {
-  // const ngrokUrl = await startNgrok();
+  email=req.body.email
+  const ngrokUrl = await startNgrok();
   paymentData = {
     ...paymentData,
     phone: req.body.phone,
@@ -28,7 +33,8 @@ const stkPush = async (req, res) => {
    email:req.body.email
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
-  const amount = req.body.amount;
+amount = req.body.amount;
+const token=req.token
   // res.json({ phone, amount });
   console.log(req.body);
   //timestamp
@@ -60,7 +66,7 @@ const stkPush = async (req, res) => {
     PartyA: `254${phone}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
     PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: `${ngrokUrl}/api/callback`,
+    CallBackURL: `${ngrokUrl}/api/deposit/call_back`,
     AccountReference: `MobileWallet`,
     TransactionDesc: "MobileWallet",
   };
@@ -75,7 +81,9 @@ const stkPush = async (req, res) => {
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
+      depositFunds( email,amount);
       res.status(200).json(response.data);
+
     })
     .catch((err) => {
       console.error(err + "hhhh");
@@ -94,7 +102,7 @@ const callBack = async (req, res) => {
   }
 
   console.log(stkCallback.CallbackMetadata);
-
+ 
   const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
 
   paymentData = {
