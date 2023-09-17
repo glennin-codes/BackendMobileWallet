@@ -1,10 +1,10 @@
 const { Schema, default: mongoose } = require("mongoose");
 
 const transactionSchema = new Schema({
- email:{
-type:String
- },
-
+  user: {
+    type: Schema.Types.ObjectId, 
+    ref: "User" // Reference the "User" model
+  },
   datePayed: {
     type: Date,
     default: Date.now(),

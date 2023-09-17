@@ -7,7 +7,7 @@ const depositFunds = require("./depositFunds.js");
 
 require("dotenv").config();
 
-let ngrokUrl;
+
 let merchantRequestId;
 let email
 
@@ -30,7 +30,7 @@ const stkPush = async (req, res) => {
     ...paymentData,
     phone: req.body.phone,
     amount: req.body.amount,
-   email:req.body.email
+   user:req.body.userId
   };
   const phone = req.body.phone.substring(1); // removing the 0 from the number
 amount = req.body.amount;

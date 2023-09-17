@@ -15,6 +15,9 @@ const userSchema = new Schema({
   amount: {
     type: Number,
   },
+  phone: {
+    type: Number,
+  },
 });
 const User = mongoose.model("User", userSchema);
 module.exports = User;
