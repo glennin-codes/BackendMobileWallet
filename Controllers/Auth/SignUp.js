@@ -37,15 +37,9 @@ const CreateUSer = async (req, res) => {
 
       const token = generateAuthToken(user._id, user.email,user.name);
 
-    //   const verify = {
-    //     email: user.email,
-    //     name: user.name,
-    //     code: verificationCode,
-    //   };
 
-    //   VerifyEmail(verify);
 
-   return res.status(201).json({token:token,user:user});
+ res.status(201).json({token:token,user:user});
    
      } catch (error) {
     console.error(error);

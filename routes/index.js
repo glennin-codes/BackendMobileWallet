@@ -9,6 +9,7 @@ const CreateUSer = require("../Controllers/Auth/SignUp");
 const Populate = require("../populate");
 const getAllTransactions = require("../Controllers/Transaction/GetTransaction");
 const { quee, widthrawPayment, result } = require("../Controllers/Transaction/Widthraw/widthraw");
+const getSingleUser = require("../Controllers/GetUser");
 
 const router = express.Router();
 
@@ -21,7 +22,7 @@ router.post("/deposit/call_back", callBack);
 router.post("/widthraw", CreateToken, widthrawPayment);
 router.post("/widthraw/quee",quee);
 router.post("/widthraw/result",result);
-
+router.get("/user/getuser/:id",getSingleUser)
 
 router.route("/auth/login").post(loginUser);
 router.route("/auth/signup").post(CreateUSer);

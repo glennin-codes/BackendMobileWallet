@@ -12,13 +12,14 @@ const phone = req.body.phone.substring(1); // removing the 0 from the number
 const token=req.token
   const Data = {
     OriginatorConversationID: "bb7694e3-aacb-46e2-84d8-c6be3813a022",
-    InitiatorName: "testapiglen",
+    InitiatorName: "testapi",
+
     SecurityCredential:
-      "GcnPEjRZc3kYQDYMEQL5EF8wBYX13X2Ttl5zWhrx8dttAw89FtV8MViM87lGldpSi9JHDRsOvrUzNeaaEmPYCh1E7EYVfeS/NkSZV0lim6wvEPn/tojZdh/CjLWx70S6LTLO6g5NX5prXb6jSLfl1wNmTX6kki5Q/+gHb61N2e4EpG0nTe8zJd0/gK7qqKJENZHslX9ZzJUsJb0JTkBZl0qk5Q0+NdeYW8tD2SbyCi9KEcQtiyeYrBScOUuIWRGyLHAFO76GyCVmeQogPSdWlteboBv99QOIEl3gwgogW8JFPEoGwk0dcs1IGO0IQBiFVH6FFnfzgrYDeQMNmIro0A==",
+      "WMVdpTwDkCGJ53Z2v+BbKv4yCBYgigaAHgc3LPuK1/DBlKDS27u3GAnMqxOXyxOJjFEZsXnqpPZfLQMS57Yj+FfOZ+o8Q3svg1QqalNf9F+GU6BALrhrVPLYNLWB3S7+OXKnpQxC3tOHt21LoKA6LhrcvkeOuqURRdJv9uGatBAqJThxsnNCEhCj3pNCOA8EPPN8pE+q2ygZTKL+u1Mp+eCt9CeUiZthPO/RiqQ0iTBt98W8WLkfauEiXs3YpMcCf2OqTH+5ILaj0+xPxpvL3d9+DRu97MheNDrYb11MA++cLFKxbbJPuDCqmblfyUoiyKCm7zG5v8I1ipUlwMlw5g==",
     CommandID: "BusinessPayment",
     Amount: amount,
-    PartyA:600987,
-    PartyB:"254708374149",
+    PartyA:600998,
+    PartyB:254708374149,
     Remarks: "widthraw funds",
     QueueTimeOutURL: `${ngrokUrl}/api/widthraw/quee`,
     ResultURL:`${ngrokUrl}/api/widthraw/result`,
