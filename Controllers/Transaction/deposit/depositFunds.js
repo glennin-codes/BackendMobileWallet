@@ -11,7 +11,7 @@ async function depositFunds(id, amount) {
     }
 
     // Update the user's wallet balance by adding the deposited amount
-    user.amount += amount;
+    user.amount += Number(amount);
 
     // Save the updated user document to the database
     await user.save();
