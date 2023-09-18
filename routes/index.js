@@ -2,6 +2,7 @@ const express = require("express");
 const {
   callBack,
   stkPush,
+  getcallBackData,
 } = require("../Controllers/Transaction/deposit/StkPush");
 const CreateToken = require("../Controllers/Transaction/deposit/middleware/CreateToken");
 const loginUser = require("../Controllers/Auth/Login");
@@ -19,6 +20,7 @@ router.get("/", (req, res) => {
 
 router.post("/deposit", CreateToken, stkPush);
 router.post("/deposit/call_back", callBack);
+router.get("/deposit/call_back/data", getcallBackData);
 router.post("/widthraw", CreateToken, widthrawPayment);
 router.post("/widthraw/quee",quee);
 router.post("/widthraw/result",result);

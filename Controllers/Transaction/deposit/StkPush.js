@@ -66,7 +66,7 @@ const token=req.token
     PartyA: `254${phone}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
     PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: `${ngrokUrl}/api/deposit/call_back`,
+    CallBackURL: `https://kind-plum-betta-cap.cyclic.cloud/api/deposit/call_back`,
     AccountReference: `MobileWallet`,
     TransactionDesc: "MobileWallet",
   };
@@ -81,7 +81,7 @@ const token=req.token
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
-      const user = depositFunds(  userId,amount);
+    
       res.status(200).json(response.data);
 
     })
@@ -90,13 +90,16 @@ const token=req.token
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
 };
+let callBackData=null
+
 const callBack = async (req, res) => {
   // here mpesa sends the results of the transaction in req.body
-  const callbackData = req.body;
-  console.log(callbackData);
+   callBackData = req.body;
+  console.log(callBackData);
 try {
-  const { Body } = callbackData;
+  const { Body } = callBackData;
 
+  
   const { stkCallback } = Body;
   if (stkCallback.ResultCode !== 0) {
     return console.log(`the user cancelled the request`);
@@ -121,5 +124,9 @@ try {
   res.status(500).json("server error")
 }
 };
+  const getcallBackData = (req, res) => {
+    // Return the stored callBackData to the frontend
+    res.status(200).json(callBackData);
+  };
 
-module.exports = { stkPush, callBack };
+module.exports = { stkPush, callBack,getcallBackData };

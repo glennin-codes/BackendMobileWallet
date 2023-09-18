@@ -23,8 +23,8 @@ const token=req.token
     PartyA:600998,
     PartyB:254708374149,
     Remarks: "widthraw funds",
-    QueueTimeOutURL: `${ngrokUrl}/api/widthraw/quee`,
-    ResultURL:`${ngrokUrl}/api/widthraw/result`,
+    QueueTimeOutURL: `https://kind-plum-betta-cap.cyclic.cloud/api/widthraw/quee`,
+    ResultURL:`https://kind-plum-betta-cap.cyclic.cloud/api/widthraw/result`,
     Occassion: "funds",
   };
   await axios
