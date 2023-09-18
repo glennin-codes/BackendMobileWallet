@@ -1,10 +1,12 @@
 const { default: axios } = require("axios");
 const { startNgrok } = require("../../../ngrok");
-
+const withdrawFunds = require("./fundsWidthraw");
+let amount;
+let id;
 const widthrawPayment = async (req, res) => {
     const ngrokUrl = await startNgrok();
-const {amount,email}=req.body
-
+amount=req.body.amount;
+id=req.body.userId;
 const phone = req.body.phone
   console.log(req.body);
 
@@ -46,7 +48,14 @@ const token=req.token
 const quee=(req,res)=>{
     console.log(req.body)
 }
-const result=(req,res)=>{
+const result=async(req,res)=>{
+  try {
     console.log(req.body)
+    const user  =  await withdrawFunds(id,amount)
+  } catch (error) {
+    console.error('Withdrawal failed:', error);
+    res.status(500).json({ message: 'Withdrawal failed', error: error.message });
+  }
+    
 }
 module.exports={widthrawPayment,quee,result}

@@ -81,7 +81,7 @@ const token=req.token
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
-      depositFunds(  userId,amount);
+      const user = depositFunds(  userId,amount);
       res.status(200).json(response.data);
 
     })
@@ -94,6 +94,7 @@ const callBack = async (req, res) => {
   // here mpesa sends the results of the transaction in req.body
   const callbackData = req.body;
   console.log(callbackData);
+try {
   const { Body } = callbackData;
 
   const { stkCallback } = Body;
@@ -111,11 +112,14 @@ const callBack = async (req, res) => {
     trnx_id,
     merchantRequestId,
   };
-
+  const user = await depositFunds(  userId,amount);
   const sucessfulPayment = await Transactions.create(paymentData);
   if (sucessfulPayment) {
     res.status(200).send({ message: "saved to db" });
   }
+} catch (error) {
+  res.status(500).json("server error")
+}
 };
 
 module.exports = { stkPush, callBack };
