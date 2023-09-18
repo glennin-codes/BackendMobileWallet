@@ -5,7 +5,7 @@ const widthrawPayment = async (req, res) => {
     const ngrokUrl = await startNgrok();
 const {amount,email}=req.body
 
-const phone = req.body.phone.substring(1); // removing the 0 from the number
+const phone = req.body.phone
   console.log(req.body);
 
   const Url = "https://sandbox.safaricom.co.ke/mpesa/b2c/v1/paymentrequest"; 

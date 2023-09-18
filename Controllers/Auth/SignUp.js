@@ -3,8 +3,8 @@ const User = require("../../Models/user");
 const jwt=require ('jsonwebtoken');
 const bcrypt= require('bcrypt');
 
-const generateAuthToken = (userId, email,name) => {
-  return jwt.sign({ userId: userId, email: email,UserName:name }, process.env.JWT_SECRET, {
+const generateAuthToken = (userId, email,phone) => {
+  return jwt.sign({ userId: userId, email: email,phone:phone}, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
 };
@@ -12,7 +12,7 @@ const generateAuthToken = (userId, email,name) => {
 const CreateUSer = async (req, res) => {
   try {
  
-      const { name, email, password,  } =
+      const { name, email, password, phone } =
         req.body;
 
       const existingUser = await User.findOne({ email: email });
@@ -28,14 +28,15 @@ const CreateUSer = async (req, res) => {
         name: name,
         email: email,
         password: hashedPassword,
-        amount:0
+        amount:0,
+        phone:phone
      
         // verificationCode: verificationCode,
       });
 
       await user.save();
 
-      const token = generateAuthToken(user._id, user.email,user.name);
+      const token = generateAuthToken(user._id, user.email,user.phone);
 
 
 

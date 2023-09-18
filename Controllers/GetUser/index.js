@@ -4,9 +4,9 @@ const User = require("../../Models/user");
 
 const getSingleUser = async (req, res) => {
   try {
-    const userId = req.params.userId; // Assuming you pass the user ID as a parameter in the URL
+    const userId = req.params.id; // Assuming you pass the user ID as a parameter in the URL
 
-    const user = await User.findOne(userId).select("-password"); // Exclude the 'password' field
+    const user = await User.findById(userId).select("-password"); // Exclude the 'password' field
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });

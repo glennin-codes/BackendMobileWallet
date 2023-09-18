@@ -1,10 +1,10 @@
 const User = require("../../../Models/user");
 
 // Function to deposit funds into a user's wallet
-async function depositFunds(email, amount) {
+async function depositFunds(id, amount) {
   try {
     // Find the user by their ID
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ _id: id });
 
     if (!user) {
       throw new Error("User not found");
