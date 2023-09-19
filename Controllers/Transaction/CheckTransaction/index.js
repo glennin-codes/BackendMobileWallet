@@ -1,10 +1,9 @@
 const { Transactions } = require("../../../Models/transactions");
 
-c;
-const verifyPayment = async (req, res) => {
+const verifyTransaction = async (req, res) => {
   try {
     // Extract phone number from req.body
-    const { phoneNumber } = req.body;
+    const { phoneNumber ,amount} = req.body;
 
     // Get the current date and time
     const currentTime = new Date();
@@ -15,6 +14,7 @@ const verifyPayment = async (req, res) => {
     // Query the database to find a matching transaction
     const matchingTransaction = await Transactions.findOne({
       PhoneNumber: phoneNumber,
+      amount:amount,
       datePayed: { $gte: fifteenMinutesAgo, $lte: currentTime },
     });
 
@@ -35,4 +35,4 @@ const verifyPayment = async (req, res) => {
   }
 };
 
-module.exports = { verifyPayment };
+module.exports = verifyTransaction
