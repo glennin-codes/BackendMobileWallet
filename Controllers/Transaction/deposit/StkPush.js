@@ -116,6 +116,7 @@ const callBack = async (req, res) => {
     const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
 
     paymentData={...paymentData, trnx_id}
+    console.log(userId,amount)
     const initialPayment = await Transactions.findOne({
       userId: userId,
       amount:amount
