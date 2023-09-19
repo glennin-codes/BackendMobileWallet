@@ -6,9 +6,10 @@ const verifyTransaction = async (req, res) => {
   try {
     console.log(req.body);
     const userId = req.body.userId;
+    console.log(userId);
     
     // Calculate the time threshold (e.g., 10 minutes) in milliseconds
-    const timeThreshold = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const timeThreshold = 30 * 60 * 1000; // 10 minutes in milliseconds
     const currentTime = Date.now();
     const earliestTime = currentTime - timeThreshold; // Calculate the earliest time
     
