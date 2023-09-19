@@ -113,28 +113,23 @@ const callBack = async (req, res) => {
 
     console.log(stkCallback.CallbackMetadata);
 
+    const amount = stkCallback.CallbackMetadata.Item[0].Value;
     const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
+    const TransactionDate = stkCallback.CallbackMetadata.Item[3].Value;
+    const PhoneNumber = stkCallback.CallbackMetadata.Item[4].Value;
+   
+   
+    paymentData={...paymentData, trnx_id,PhoneNumber,TransactionDate,amount}
+    console.log(paymentData)
 
-    paymentData={...paymentData, trnx_id}
-    console.log(userId,amount)
-    const userIdLocals = res.locals.userId;
-  const amountLocals = res.locals.amount
-  console.log("locals",amountLocals,userIdLocals)
-    const initialPayment = await Transactions.findOne({
-      userId: userIdLocals,
-      amount:amountLocals
-      });
+    const initialPayment = await Transactions.create(paymentData);
 
-    if (!initialPayment) {
-      return res.status(404).json({ message: "Initial payment data not found" });
-    }
-
-    // Update the payment record with trnx_id
-    initialPayment.trnx_id = trnx_id; // Assuming trnx_id is available in this scope
-    await initialPayment.save();
-
+    if (initialPayment) {
       res.status(200).send({ message: "saved to db" });
 
+    }
+
+    
   } catch (error) {
     res.status(500).json("server error");
   }

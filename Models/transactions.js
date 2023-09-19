@@ -8,9 +8,14 @@ const transactionSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
+TransactionDate:{
+  type:Date
 
-  phone: {
-    type: String,
+},
+
+  PhoneNumber:{
+   type:String
+
   },
   amount: {
     type: String,

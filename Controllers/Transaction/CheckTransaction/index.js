@@ -1,39 +1,38 @@
 const { Transactions } = require("../../../Models/transactions");
-const depositFunds = require("../deposit/depositFunds");
 
-// Controller to verify a payment for a specific userId within a time frame
-const verifyTransaction = async (req, res) => {
+c;
+const verifyPayment = async (req, res) => {
   try {
-    console.log(req.body);
-    const userId = req.body.userId;
-    console.log(userId);
-    
-  
-    const timeThreshold = 60 * 60 * 1000; 
-    const currentTime = Date.now();
-    const earliestTime = currentTime - timeThreshold; // Calculate the earliest time
-    
-    // Query the database for payments made by the specified userId within the time frame
-    const payment = await Transactions.findOne({
-        userId:userId,
-      datePayed: { $gte: earliestTime, $lte: currentTime },
+    // Extract phone number from req.body
+    const { phoneNumber } = req.body;
+
+    // Get the current date and time
+    const currentTime = new Date();
+
+    // Calculate the time 15 minutes ago
+    const fifteenMinutesAgo = new Date(currentTime - 15 * 60 * 1000);
+
+    // Query the database to find a matching transaction
+    const matchingTransaction = await Transactions.findOne({
+      PhoneNumber: phoneNumber,
+      datePayed: { $gte: fifteenMinutesAgo, $lte: currentTime },
     });
-    if (payment && payment.trnx_id) {
 
-    const user = await depositFunds(userId, payment.amount);
-    // Payment was found within the time frame
-    return res.status(200).json({ success: true, message: "Payment verified" });
-
-        
+    // Check if a matching transaction was found
+    if (matchingTransaction) {
+      // Send a success response
+      res.status(200).json({ message: "Payment verified successfully" });
     } else {
-      // Payment was not found within the time frame
-      return res.status(404).json({ success: false, message: "Payment not found or verification failed" });
+      // No matching transaction found
+      res
+        .status(404)
+        .json({ message: "Payment not found or not within 15 minutes" });
     }
   } catch (error) {
+    // Handle any errors that may occur during the process
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
-
-module.exports = verifyTransaction
+module.exports = { verifyPayment };
