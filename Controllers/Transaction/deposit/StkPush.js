@@ -75,14 +75,8 @@ userId = req.body.userId;
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
-      const initialPayment =  Transactions.create({
-        userId: req.body.userId,
-        phone: req.body.phone,
-        amount: req.body.amount,
-        trnx_id:null
-        // Other fields you want to store initially
-      });
-      res.status(200).json({res:response.data,initialPayment});
+     
+      res.status(200).json({res:response.data});
 
     })
     .catch((err) => {
@@ -115,8 +109,8 @@ const callBack = async (req, res) => {
 
     const amount = stkCallback.CallbackMetadata.Item[0].Value;
     const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
-    const TransactionDate = stkCallback.CallbackMetadata.Item[3].Value;
-    const PhoneNumber = stkCallback.CallbackMetadata.Item[4].Value;
+    const TransactionDate = stkCallback.CallbackMetadata.Item[2].Value;
+    const PhoneNumber = stkCallback.CallbackMetadata.Item[3].Value;
    
    
     paymentData={...paymentData, trnx_id,PhoneNumber,TransactionDate,amount}

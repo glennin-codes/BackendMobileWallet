@@ -9,7 +9,7 @@ const transactionSchema = new Schema({
     default: Date.now(),
   },
 TransactionDate:{
-  type:Date
+  type:String
 
 },
 
