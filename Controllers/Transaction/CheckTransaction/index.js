@@ -4,6 +4,7 @@ const depositFunds = require("../deposit/depositFunds");
 // Controller to verify a payment for a specific userId within a time frame
 const verifyTransaction = async (req, res) => {
   try {
+    console.log(req.body);
     const userId = req.body.userId;
     
     // Calculate the time threshold (e.g., 10 minutes) in milliseconds
@@ -13,7 +14,7 @@ const verifyTransaction = async (req, res) => {
     
     // Query the database for payments made by the specified userId within the time frame
     const payment = await Transactions.findOne({
-      userId,
+        userId:userId,
       datePayed: { $gte: earliestTime, $lte: currentTime },
     });
     if (payment) {

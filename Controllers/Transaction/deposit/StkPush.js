@@ -30,7 +30,7 @@ const stkPush = async (req, res) => {
     ...paymentData,
     phone: req.body.phone,
     amount: req.body.amount,
-   userId:req.body. userId
+   userId:req.body.userId
   };
   const phone = req.body.phone; // removing the 0 from the number
 amount = req.body.amount;
@@ -93,6 +93,7 @@ const token=req.token
 let callBackDataPromise = null;
 
 const callBack = async (req, res) => {
+  console.log(paymentData);
   // here mpesa sends the results of the transaction in req.body
   callBackData = req.body;
   console.log(callBackData);
