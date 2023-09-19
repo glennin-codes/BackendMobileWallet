@@ -27,7 +27,6 @@ const stkPush = async (req, res) => {
   userId=req.body.userId
   const ngrokUrl = await startNgrok();
   paymentData = {
-    ...paymentData,
     phone: req.body.phone,
     amount: req.body.amount,
    userId:req.body.userId
