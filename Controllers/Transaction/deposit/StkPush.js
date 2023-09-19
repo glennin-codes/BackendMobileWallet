@@ -119,6 +119,7 @@ const callBack = async (req, res) => {
     console.log(userId,amount)
     const userIdLocals = res.locals.userId;
   const amountLocals = res.locals.amount
+  console.log("locals",amountLocals,userIdLocals)
     const initialPayment = await Transactions.findOne({
       userId: userIdLocals,
       amount:amountLocals
