@@ -14,6 +14,18 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use((req, res, next) => {
+  // Extract and process data here
+  const userId = req.body.userId;
+  const amount = req.body.amount;
+
+  // Store the data in res.locals to make it available to other middleware and routes
+  res.locals.userId = userId;
+  res.locals.amount = amount;
+
+ 
+  next();
+});
 
 // app.use(express.static(path.join(__dirname, 'public')));
 
