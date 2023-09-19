@@ -11,6 +11,7 @@ const Populate = require("../populate");
 const getAllTransactions = require("../Controllers/Transaction/GetTransaction");
 const { quee, widthrawPayment, result } = require("../Controllers/Transaction/Widthraw/widthraw");
 const getSingleUser = require("../Controllers/GetUser");
+const verifyTransaction = require("../Controllers/Transaction/CheckTransaction");
 
 const router = express.Router();
 
@@ -21,6 +22,7 @@ router.get("/", (req, res) => {
 router.post("/deposit", CreateToken, stkPush);
 router.post("/deposit/call_back", callBack);
 router.get("/deposit/call_back/data", getcallBackData);
+router.post("/deposit/check",verifyTransaction );
 router.post("/widthraw", CreateToken, widthrawPayment);
 router.post("/widthraw/quee",quee);
 router.post("/widthraw/result",result);

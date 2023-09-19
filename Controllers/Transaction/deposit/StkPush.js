@@ -1,8 +1,8 @@
 const { startNgrok } = require("../../../ngrok.js");
 
-const { Transactions } = require("../../../Models/transactions.js");
 const { default: axios } = require("axios");
 const depositFunds = require("./depositFunds.js");
+const { Transactions } = require("../../../Models/transactions.js");
 
 
 require("dotenv").config();
@@ -89,44 +89,64 @@ const token=req.token
       console.error(err + "hhhh");
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
-};
-let callBackData=null
+};let callBackData = null;
+let callBackDataPromise = null;
 
 const callBack = async (req, res) => {
   // here mpesa sends the results of the transaction in req.body
-   callBackData = req.body;
+  callBackData = req.body;
   console.log(callBackData);
-try {
-  const { Body } = callBackData;
 
-  
-  const { stkCallback } = Body;
-  if (stkCallback.ResultCode !== 0) {
-    return console.log(`the user cancelled the request`);
+  if (callBackDataPromise) {
+    callBackDataPromise.resolve(callBackData);
   }
 
-  console.log(stkCallback.CallbackMetadata);
- 
-  const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
+  try {
+    const { Body } = callBackData;
+    const { stkCallback } = Body;
 
-  paymentData = {
-    ...paymentData,
-    datePayed: Date.now(),
-    trnx_id,
-    merchantRequestId,
-  };
-  const user = await depositFunds(  userId,amount);
-  const sucessfulPayment = await Transactions.create(paymentData);
-  if (sucessfulPayment) {
-    res.status(200).send({ message: "saved to db" });
+    if (stkCallback.ResultCode !== 0) {
+      return console.log(`the user cancelled the request`);
+    }
+
+    console.log(stkCallback.CallbackMetadata);
+
+    const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
+
+    paymentData = {
+      ...paymentData,
+      trnx_id,
+     
+    };
+    
+    const successfulPayment = await Transactions.create(paymentData);
+    if (successfulPayment) {
+      res.status(200).send({ message: "saved to db" });
+    }
+  } catch (error) {
+    res.status(500).json("server error");
   }
-} catch (error) {
-  res.status(500).json("server error")
-}
 };
-  const getcallBackData = (req, res) => {
-    // Return the stored callBackData to the frontend
-    res.status(200).json(callBackData);
-  };
+
+const getcallBackData = async (req, res) => {
+  if (callBackData) {
+    // If callBackData is already available, return it immediately
+    console.log(callBackData);
+    return res.status(200).json(callBackData);
+  }
+
+  // If callBackData is not available yet, create a promise that resolves when it is
+  if (!callBackDataPromise) {
+    callBackDataPromise = {};
+    callBackDataPromise.promise = new Promise((resolve) => {
+      callBackDataPromise.resolve = resolve;
+    });
+  }
+
+  // Wait for the promise to resolve
+  const data = await callBackDataPromise.promise;
+  res.status(200).json(data);
+};
+
 
 module.exports = { stkPush, callBack,getcallBackData };
