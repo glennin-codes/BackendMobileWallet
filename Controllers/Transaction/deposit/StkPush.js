@@ -21,8 +21,9 @@ let merchantRequestId;
 
 let paymentData = {};
 let amount;
+let userId
 const stkPush = async (req, res) => {
- let userId = req.body.userId;
+userId = req.body.userId;
   const ngrokUrl = await startNgrok();
   paymentData={...paymentData,userId:req.body.userId, phone:req.body.phone,amount:req.body.amount}
   const phone = req.body.phone; // removing the 0 from the number
@@ -116,10 +117,9 @@ const callBack = async (req, res) => {
 
     paymentData={...paymentData, trnx_id}
     const initialPayment = await Transactions.findOne({
-      userId: req.body.userId,
-      amount: req.body.amount,
-      // You might need additional criteria to uniquely identify the record
-    });
+      userId: userId,
+      amount:amount
+      });
 
     if (!initialPayment) {
       return res.status(404).json({ message: "Initial payment data not found" });
