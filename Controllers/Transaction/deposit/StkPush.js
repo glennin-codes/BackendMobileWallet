@@ -4,12 +4,10 @@ const { default: axios } = require("axios");
 const depositFunds = require("./depositFunds.js");
 const { Transactions } = require("../../../Models/transactions.js");
 
-
 require("dotenv").config();
 
-
 let merchantRequestId;
-let userId
+let userId;
 
 // const ngrokStart = async () => {
 //   try {
@@ -24,16 +22,16 @@ let userId
 let paymentData = {};
 let amount;
 const stkPush = async (req, res) => {
-  userId=req.body.userId
+  userId = req.body.userId;
   const ngrokUrl = await startNgrok();
   paymentData = {
     phone: req.body.phone,
     amount: req.body.amount,
-   userId:req.body.userId
+    userId: req.body.userId,
   };
   const phone = req.body.phone; // removing the 0 from the number
-amount = req.body.amount;
-const token=req.token
+  amount = req.body.amount;
+  const token = req.token;
   // res.json({ phone, amount });
   console.log(req.body);
   //timestamp
@@ -80,15 +78,15 @@ const token=req.token
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
-    
-      res.status(200).json(response.data);
 
+      res.status(200).json(response.data);
     })
     .catch((err) => {
       console.error(err + "hhhh");
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
-};let callBackData = null;
+};
+let callBackData = null;
 let callBackDataPromise = null;
 
 const callBack = async (req, res) => {
@@ -116,11 +114,8 @@ const callBack = async (req, res) => {
     paymentData = {
       ...paymentData,
       trnx_id,
-      userId,
-      amount
-     
     };
-    
+
     const successfulPayment = await Transactions.create(paymentData);
     if (successfulPayment) {
       res.status(200).send({ message: "saved to db" });
@@ -150,5 +145,4 @@ const getcallBackData = async (req, res) => {
   res.status(200).json(data);
 };
 
-
-module.exports = { stkPush, callBack,getcallBackData };
+module.exports = { stkPush, callBack, getcallBackData };
