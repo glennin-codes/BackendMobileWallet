@@ -1,5 +1,4 @@
 const { Transactions } = require("../../../Models/transactions");
-const { where } = require("../../../Models/user");
 const depositFunds = require("../deposit/depositFunds");
 
 // Controller to verify a payment for a specific userId within a time frame
@@ -15,9 +14,11 @@ const verifyTransaction = async (req, res) => {
     const earliestTime = currentTime - timeThreshold; // Calculate the earliest time
     
     // Query the database for payments made by the specified userId within the time frame
-  const payment=await Transactions.findOne({userId : userId})
-    console.log(payment.trnx_id);
-  if (payment ) {
+    const payment = await Transactions.findOne({
+        userId:userId,
+      datePayed: { $gte: earliestTime, $lte: currentTime },
+    });
+    if (payment && payment.trnx_id) {
 
     const user = await depositFunds(userId, payment.amount);
     // Payment was found within the time frame
