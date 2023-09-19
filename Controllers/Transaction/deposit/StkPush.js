@@ -7,7 +7,7 @@ const { Transactions } = require("../../../Models/transactions.js");
 require("dotenv").config();
 
 let merchantRequestId;
-let userId;
+// let userId;
 
 // const ngrokStart = async () => {
 //   try {
@@ -22,13 +22,9 @@ let userId;
 let paymentData = {};
 let amount;
 const stkPush = async (req, res) => {
-  userId = req.body.userId;
+ let userId = req.body.userId;
   const ngrokUrl = await startNgrok();
-  paymentData = {
-    phone: req.body.phone,
-    amount: req.body.amount,
-    userId: req.body.userId,
-  };
+  paymentData={...paymentData,userId:req.body.userId, phone:req.body.phone,amount:req.body.amount}
   const phone = req.body.phone; // removing the 0 from the number
   amount = req.body.amount;
   const token = req.token;
@@ -111,11 +107,7 @@ const callBack = async (req, res) => {
 
     const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
 
-    paymentData = {
-      ...paymentData,
-      trnx_id,
-    };
-
+    paymentData={...paymentData, trnx_id}
     const successfulPayment = await Transactions.create(paymentData);
     if (successfulPayment) {
       res.status(200).send({ message: "saved to db" });
