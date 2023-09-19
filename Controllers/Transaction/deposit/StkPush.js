@@ -74,8 +74,15 @@ const stkPush = async (req, res) => {
       console.log(response.data);
       merchantRequestId = response.data.MerchantRequestID;
       console.log(`it is ${merchantRequestId}`);
+      const initialPayment =  Transactions.create({
+        userId: req.body.userId,
+        phone: req.body.phone,
+        amount: req.body.amount,
+        trnx_id:null
+        // Other fields you want to store initially
+      });
+      res.status(200).json({res:response.data,initialPayment});
 
-      res.status(200).json(response.data);
     })
     .catch((err) => {
       console.error(err + "hhhh");
@@ -108,10 +115,22 @@ const callBack = async (req, res) => {
     const trnx_id = stkCallback.CallbackMetadata.Item[1].Value;
 
     paymentData={...paymentData, trnx_id}
-    const successfulPayment = await Transactions.create(paymentData);
-    if (successfulPayment) {
-      res.status(200).send({ message: "saved to db" });
+    const initialPayment = await Transactions.findOne({
+      userId: req.body.userId,
+      amount: req.body.amount,
+      // You might need additional criteria to uniquely identify the record
+    });
+
+    if (!initialPayment) {
+      return res.status(404).json({ message: "Initial payment data not found" });
     }
+
+    // Update the payment record with trnx_id
+    initialPayment.trnx_id = trnx_id; // Assuming trnx_id is available in this scope
+    await initialPayment.save();
+
+      res.status(200).send({ message: "saved to db" });
+
   } catch (error) {
     res.status(500).json("server error");
   }

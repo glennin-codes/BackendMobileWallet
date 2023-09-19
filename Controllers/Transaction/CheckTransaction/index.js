@@ -17,11 +17,13 @@ const verifyTransaction = async (req, res) => {
         userId:userId,
       datePayed: { $gte: earliestTime, $lte: currentTime },
     });
-    if (payment) {
+    if (payment && payment.trnx_id) {
 
-        const user = await depositFunds(userId, payment.amount);
-      // Payment was found within the time frame
-      return res.status(200).json({ success: true, message: "Payment verified" });
+    const user = await depositFunds(userId, payment.amount);
+    // Payment was found within the time frame
+    return res.status(200).json({ success: true, message: "Payment verified" });
+
+        
     } else {
       // Payment was not found within the time frame
       return res.status(404).json({ success: false, message: "Payment not found or verification failed" });
