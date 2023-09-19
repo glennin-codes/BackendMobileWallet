@@ -117,7 +117,8 @@ const callBack = async (req, res) => {
     paymentData = {
       ...paymentData,
       trnx_id,
-      userId
+      userId,
+      amount
      
     };
     
