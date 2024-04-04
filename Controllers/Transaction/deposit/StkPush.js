@@ -1,4 +1,4 @@
-const { startNgrok } = require("../../../ngrok.js");
+// const { startNgrok } = require("../../../ngrok.js");
 
 const { default: axios } = require("axios");
 const depositFunds = require("./depositFunds.js");
@@ -26,7 +26,11 @@ const stkPush = async (req, res) => {
 userId = req.body.userId;
   const ngrokUrl = await startNgrok();
   paymentData={...paymentData,userId:req.body.userId, phone:req.body.phone,amount:req.body.amount}
-  const phone = req.body.phone; // removing the 0 from the number
+  const phone = req.body.phone; 
+  
+const phoneWithoutZero = phone.substring(1);// removing the 0 from the number  0712345678
+console.log(phoneWithoutZero); 
+
   amount = req.body.amount;
   const token = req.token;
   // res.json({ phone, amount });
@@ -44,9 +48,12 @@ userId = req.body.userId;
   const shortCode = process.env.MPESA_PAYBILL;
   const passKey = process.env.MPESA_PASSKEY;
   console.log({shortCode,passKey})
-  const Url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"; // where to send the stk push requestg
-const api="https://backendmobilewallet.onrender.com/api/deposit/call_back"
-// const api =`${ngrokUrl}/api/deposit/call_back`;
+  const Url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"; // where to send the stk push request
+
+const api="https://backendmobilewallet.onrender.com/api/deposit/call_back" //call back url after deploying it
+
+// const api =`${ngrokUrl}/api/deposit/call_back`; //the call back url using ngrok ..Dint work with this
+
   //(The base64 string is a combination of Shortcode+Passkey+Timestamp)
   const password = new Buffer.from(shortCode + passKey + timeStamp).toString(
     "base64"
@@ -59,10 +66,10 @@ const api="https://backendmobilewallet.onrender.com/api/deposit/call_back"
     Timestamp: timeStamp, //time stamp  IN THE FORM OF YYYYMMDDHHmmss
     TransactionType: "CustomerPayBillOnline", //" OR CustomerBuyGoodsOnline"
     Amount: amount,
-    PartyA: `254${phone}`, //USERS PHONE NUMBER
+    PartyA: `254${phoneWithoutZero}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
-    PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: api,
+    PhoneNumber: `254${phoneWithoutZero}`, //USERS PHONE NUMBER
+    CallBackURL: api, //call back url
     AccountReference: `MobileWallet`,
     TransactionDesc: "MobileWallet",
   };
@@ -86,24 +93,13 @@ const api="https://backendmobilewallet.onrender.com/api/deposit/call_back"
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
 };
-// let callBackData = null;
-// let callBackDataPromise = null;
-
+//call back function
 const callBack = async (req, res) => {
 
  const callBackData = req.body;
  
   console.log(callBackData);
-  // here mpesa sends the results of the transaction in req.body
 
-//   if(!callBackData.Body.stkCallback.CallbackMetadata){
-//     console.log( callBackData.Body.stkCallback.ResultDesc);
-//    return  res.json( 'ok')
-// }
- 
-  // if (callBackDataPromise) {
-  //   callBackDataPromise.resolve(callBackData);
-  // }
 
   try {
    
@@ -114,11 +110,9 @@ const callBack = async (req, res) => {
     const { stkCallback } = Body;
     if(!callBackData.Body.stkCallback.CallbackMetadata){
       console.log( "0ofa",callBackData.Body.stkCallback.ResultDesc);
-     
+     return res.status(400).json({message:callBackData.Body.stkCallback.ResultDesc});
   }
-    if (stkCallback.ResultCode !== 0) {
-      return console.log(`the user cancelled the request`);
-    }
+   
 
     console.log(stkCallback.CallbackMetadata);
 
@@ -145,24 +139,8 @@ const callBack = async (req, res) => {
   }
 };
 
-// const getcallBackData = async (req, res) => {
-//   if (callBackData) {
-//     // If callBackData is already available, return it immediately
-//     console.log(callBackData);
-//     return res.status(200).json(callBackData);
-//   }
-
-//   // If callBackData is not available yet, create a promise that resolves when it is
-//   if (!callBackDataPromise) {
-//     callBackDataPromise = {};
-//     callBackDataPromise.promise = new Promise((resolve) => {
-//       callBackDataPromise.resolve = resolve;
-//     });
-//   }
-
-//   // Wait for the promise to resolve
-//   const data = await callBackDataPromise.promise;
-//   res.status(200).json(data);
-// };
-
 module.exports = { stkPush, callBack};
+  //not necessary
+    // if (stkCallback.ResultCode !== 0) {
+    //   return console.log(`the user cancelled the request`);
+    // }
