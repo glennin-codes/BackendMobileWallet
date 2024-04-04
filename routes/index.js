@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
 
 router.post("/deposit", CreateToken, stkPush);
 router.post("/deposit/call_back", callBack);
-router.get("/deposit/call_back/data", getcallBackData);
+// router.get("/deposit/call_back/data", getcallBack);
 router.post("/deposit/check",verifyTransaction );
 router.post("/widthraw", CreateToken, widthrawPayment);
 router.post("/widthraw/quee",quee);

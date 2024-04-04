@@ -93,20 +93,21 @@ const callBack = async (req, res) => {
 
  
   // here mpesa sends the results of the transaction in req.body
-  callBackData = req.body;
-  console.log(paymentData);
-  console.log(callBackData);
-  console.log("message");
-  if(!callBackData.Body.stkCallback.CallbackMetadata){
-    console.log( callBackData.Body.stkCallback.ResultDesc);
-   return  res.json( 'ok')
-}
+
+//   if(!callBackData.Body.stkCallback.CallbackMetadata){
+//     console.log( callBackData.Body.stkCallback.ResultDesc);
+//    return  res.json( 'ok')
+// }
  
-  if (callBackDataPromise) {
-    callBackDataPromise.resolve(callBackData);
-  }
+  // if (callBackDataPromise) {
+  //   callBackDataPromise.resolve(callBackData);
+  // }
 
   try {
+    callBackData = req.body;
+    console.log(paymentData);
+    console.log(callBackData);
+    console.log("message");
     const { Body } = callBackData;
     const { stkCallback } = Body;
 
@@ -138,24 +139,24 @@ const callBack = async (req, res) => {
   }
 };
 
-const getcallBackData = async (req, res) => {
-  if (callBackData) {
-    // If callBackData is already available, return it immediately
-    console.log(callBackData);
-    return res.status(200).json(callBackData);
-  }
+// const getcallBackData = async (req, res) => {
+//   if (callBackData) {
+//     // If callBackData is already available, return it immediately
+//     console.log(callBackData);
+//     return res.status(200).json(callBackData);
+//   }
 
-  // If callBackData is not available yet, create a promise that resolves when it is
-  if (!callBackDataPromise) {
-    callBackDataPromise = {};
-    callBackDataPromise.promise = new Promise((resolve) => {
-      callBackDataPromise.resolve = resolve;
-    });
-  }
+//   // If callBackData is not available yet, create a promise that resolves when it is
+//   if (!callBackDataPromise) {
+//     callBackDataPromise = {};
+//     callBackDataPromise.promise = new Promise((resolve) => {
+//       callBackDataPromise.resolve = resolve;
+//     });
+//   }
 
-  // Wait for the promise to resolve
-  const data = await callBackDataPromise.promise;
-  res.status(200).json(data);
-};
+//   // Wait for the promise to resolve
+//   const data = await callBackDataPromise.promise;
+//   res.status(200).json(data);
+// };
 
-module.exports = { stkPush, callBack, getcallBackData };
+module.exports = { stkPush, callBack};
