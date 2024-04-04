@@ -110,7 +110,7 @@ const callBack = async (req, res) => {
     console.log("message");
     const { Body } = callBackData;
     const { stkCallback } = Body;
-    if(! callbackData.Body.stkCallback.CallbackMetadata){
+    if(!callBackData.Body.stkCallback.CallbackMetadata){
       console.log( "0ofa",callBackData.Body.stkCallback.ResultDesc);
      
   }
