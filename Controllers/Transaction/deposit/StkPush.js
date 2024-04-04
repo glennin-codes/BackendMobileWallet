@@ -24,7 +24,7 @@ let amount;
 let userId
 const stkPush = async (req, res) => {
 userId = req.body.userId;//not necessary.the userid was to be provide when creating account for the mobile wallet but you paste a dummy id like "sdsjkdjkkuiw3093"
-  const ngrokUrl = await startNgrok();
+  // const ngrokUrl = await startNgrok();
   paymentData={...paymentData,userId:req.body.userId, phone:req.body.phone,amount:req.body.amount}
   const phone = req.body.phone; 
   
