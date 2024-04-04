@@ -111,8 +111,7 @@ const callBack = async (req, res) => {
     if(!callBackData.Body.stkCallback.CallbackMetadata){
       console.log( "error",callBackData.Body.stkCallback.ResultDesc);
      return res.status(400).json({message:callBackData.Body.stkCallback.ResultDesc});
-  }
-   
+  }else{
 
     console.log(stkCallback.CallbackMetadata);
 
@@ -131,6 +130,9 @@ const callBack = async (req, res) => {
       res.status(200).send({ message: "saved to db" });
 
     }
+
+  }
+   
 
     
   } catch (error) {
