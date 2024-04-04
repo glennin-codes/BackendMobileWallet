@@ -45,8 +45,8 @@ userId = req.body.userId;
   const passKey = process.env.MPESA_PASSKEY;
   console.log({shortCode,passKey})
   const Url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"; // where to send the stk push requestg
-// const api="https://kind-plum-betta-cap.cyclic.cloud/api/deposit/call_back"
-const api =`${ngrokUrl}/api/deposit/call_back`;
+const api="https://backendmobilewallet.onrender.com/api/deposit/call_back"
+// const api =`${ngrokUrl}/api/deposit/call_back`;
   //(The base64 string is a combination of Shortcode+Passkey+Timestamp)
   const password = new Buffer.from(shortCode + passKey + timeStamp).toString(
     "base64"
@@ -90,11 +90,18 @@ let callBackData = null;
 let callBackDataPromise = null;
 
 const callBack = async (req, res) => {
-  console.log(paymentData);
+
+ 
   // here mpesa sends the results of the transaction in req.body
   callBackData = req.body;
+  console.log(paymentData);
   console.log(callBackData);
-
+  console.log("message");
+  if(!callBackData.Body.stkCallback.CallbackMetadata){
+    console.log( callBackData.Body.stkCallback.ResultDesc);
+   return  res.json( 'ok')
+}
+ 
   if (callBackDataPromise) {
     callBackDataPromise.resolve(callBackData);
   }
