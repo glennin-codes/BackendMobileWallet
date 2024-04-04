@@ -110,7 +110,10 @@ const callBack = async (req, res) => {
     console.log("message");
     const { Body } = callBackData;
     const { stkCallback } = Body;
-
+    if(! callbackData.Body.stkCallback.CallbackMetadata){
+      console.log( "0ofa",callBackData.Body.stkCallback.ResultDesc);
+     
+  }
     if (stkCallback.ResultCode !== 0) {
       return console.log(`the user cancelled the request`);
     }
