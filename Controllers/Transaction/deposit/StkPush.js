@@ -86,12 +86,14 @@ const api="https://backendmobilewallet.onrender.com/api/deposit/call_back"
       res.status(400).json(JSON.stringify(err) + "hhhh");
     });
 };
-let callBackData = null;
-let callBackDataPromise = null;
+// let callBackData = null;
+// let callBackDataPromise = null;
 
 const callBack = async (req, res) => {
 
+ const callBackData = req.body;
  
+  console.log(callBackData);
   // here mpesa sends the results of the transaction in req.body
 
 //   if(!callBackData.Body.stkCallback.CallbackMetadata){
@@ -104,7 +106,7 @@ const callBack = async (req, res) => {
   // }
 
   try {
-    callBackData = req.body;
+   
     console.log(paymentData);
     console.log(callBackData);
     console.log("message");
