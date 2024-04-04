@@ -12,11 +12,11 @@ const app = require("../app");
 
 dotenv.config();
 const debug = createDebugger("rental-app:server");
-const Mongo_Url="mongodb+srv://glen:123glen@cluster0.wxljxsi.mongodb.net/?retryWrites=true&w=majority"
+// const Mongo_Url="mongodb+srv://glen:123glen@cluster0.wxljxsi.mongodb.net/?retryWrites=true&w=majority"
 async function connectToMongoDB() {
   try {
     mongoose.set("strictQuery", false);
-    await mongoose.connect(Mongo_Url, {
+    await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

@@ -27,7 +27,7 @@ router.post("/widthraw", CreateToken, widthrawPayment);
 router.post("/widthraw/quee",quee);
 router.post("/widthraw/result",result);
 router.get("/user/getuser/:id",getSingleUser)
-
+router.get("/transactions")
 router.route("/auth/login").post(loginUser);
 router.route("/auth/signup").post(CreateUSer);
 router.delete("/api/all", Populate);

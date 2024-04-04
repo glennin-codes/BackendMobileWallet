@@ -30,7 +30,7 @@ userId = req.body.userId;
   amount = req.body.amount;
   const token = req.token;
   // res.json({ phone, amount });
-  console.log(req.body);
+  console.log({token});
   //timestamp
   const date = new Date();
   const timeStamp =
@@ -43,8 +43,10 @@ userId = req.body.userId;
 
   const shortCode = process.env.MPESA_PAYBILL;
   const passKey = process.env.MPESA_PASSKEY;
+  console.log({shortCode,passKey})
   const Url = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"; // where to send the stk push requestg
-
+// const api="https://kind-plum-betta-cap.cyclic.cloud/api/deposit/call_back"
+const api =`${ngrokUrl}/api/deposit/call_back`;
   //(The base64 string is a combination of Shortcode+Passkey+Timestamp)
   const password = new Buffer.from(shortCode + passKey + timeStamp).toString(
     "base64"
@@ -60,7 +62,7 @@ userId = req.body.userId;
     PartyA: `254${phone}`, //USERS PHONE NUMBER
     PartyB: shortCode, // OUR PAY BILL
     PhoneNumber: `254${phone}`, //USERS PHONE NUMBER
-    CallBackURL: `https://kind-plum-betta-cap.cyclic.cloud/api/deposit/call_back`,
+    CallBackURL: api,
     AccountReference: `MobileWallet`,
     TransactionDesc: "MobileWallet",
   };
