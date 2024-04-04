@@ -23,7 +23,7 @@ let paymentData = {};
 let amount;
 let userId
 const stkPush = async (req, res) => {
-userId = req.body.userId;
+userId = req.body.userId;//not necessary.the userid was to be provide when creating account for the mobile wallet but you paste a dummy id like "sdsjkdjkkuiw3093"
   const ngrokUrl = await startNgrok();
   paymentData={...paymentData,userId:req.body.userId, phone:req.body.phone,amount:req.body.amount}
   const phone = req.body.phone; 
@@ -124,7 +124,7 @@ const callBack = async (req, res) => {
    
     paymentData={...paymentData, trnx_id,PhoneNumber,TransactionDate,amount}
     console.log(paymentData)
-
+//saving transaction to the dqatabase
     const initialPayment = await Transactions.create(paymentData);
 
     if (initialPayment) {
