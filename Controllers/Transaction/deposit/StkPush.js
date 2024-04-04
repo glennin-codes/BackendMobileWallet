@@ -124,7 +124,7 @@ const callBack = async (req, res) => {
    
     paymentData={...paymentData, trnx_id,PhoneNumber,TransactionDate,amount}
     console.log(paymentData)
-//saving transaction to the dqatabase
+//saving transaction to the database
     const initialPayment = await Transactions.create(paymentData);
 
     if (initialPayment) {
