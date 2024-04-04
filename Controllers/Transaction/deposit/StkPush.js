@@ -99,13 +99,13 @@ const callBack = async (req, res) => {
  const callBackData = req.body;
  
   console.log(callBackData);
-
+  console.log("message");//testing if callback is called
 
   try {
    
     console.log(paymentData);
     console.log(callBackData);
-    console.log("message");
+   
     const { Body } = callBackData;
     const { stkCallback } = Body;
     if(!callBackData.Body.stkCallback.CallbackMetadata){
